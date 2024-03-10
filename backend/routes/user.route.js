@@ -5,5 +5,5 @@ const router = express.Router();
 
 router.get("/test", test);
 
-/* 'cause we export router as a default, we are able to change its name in the component we import this, for example, in index.js, we imoprt router as UserRoutes */
+/* 'cause we export router as a default, we are able to change its name in the component we import this, for example, in index.js, we imoprt router as userRoutes */
 export default router;
