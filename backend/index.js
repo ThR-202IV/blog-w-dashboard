@@ -22,3 +22,15 @@ app.listen(3000, () => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+
+/* error is the error that comes from the input. The error passed by the next method that passes the erroHandler somes here */
+app.use((error, req, res, next) => {
+  /* statusCode comes from the error */
+  const statusCode = error.statusCode || 500;
+  const message = error.message || "Internal server error";
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
