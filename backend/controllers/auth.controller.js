@@ -6,6 +6,7 @@ import { errorHandler } from "../utils/error.js";
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
+  /* for custom error handling, where the system itself doesn't throw an error but we need to in the moment */
   if (
     !username ||
     !email ||
