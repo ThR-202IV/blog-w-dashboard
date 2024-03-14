@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  /* in state.user, the user denotes the name key in userSlice: name: "user" */
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     /* trim() is added to remove whitespaces */
@@ -17,13 +25,11 @@ const SignIn = () => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields!");
+      return dispatch(signInFailure("All fields are required!"));
     }
 
     try {
-      setLoading(true);
-      /* setting it to null as we want to clear the error in case we had one from a previous request */
-      setErrorMessage(null);
+      dispatch(signInStart());
       /* 'cause we're reaching out to the server which is in localhost:3000, we must have localhost: 3000 in front of this address as well, which we have added in "vite.config.js" file */
       const resp = await fetch("/api/auth/signin", {
         method: "POST",
@@ -32,24 +38,25 @@ const SignIn = () => {
       });
 
       const data = await resp.json();
-      /* the error that comes from data is from the general error handling middleware we set up in index.js */
+
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        /* data.message becomes the action.payload in state.error of signInFailure in userSlice.jsx */
+        dispatch(signInFailure(data.message));
       }
-      setLoading(false);
 
       if (resp.ok) {
+        /* data becomes the action.payload in state.currentUser of signInSuccess in userSlice.jsx */
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(signInFailure(error.message));
     }
   };
 
   return (
     <div className="min-h-screen mt-20">
-      <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
+      <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-8">
         {/* LEFT SIDE */}
         <div className="flex-1">
           <Link to="/" className="font-bold dark:text-white text-4xl">
