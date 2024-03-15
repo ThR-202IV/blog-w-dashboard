@@ -82,7 +82,6 @@ export const google = async (req, res, next) => {
 
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETKEY);
-
       const { password, ...rest } = user._doc;
 
       res
@@ -98,7 +97,6 @@ export const google = async (req, res, next) => {
       const generatedRandomPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
-
       const hashedPassword = bcryptjs.hashSync(generatedRandomPassword, 10);
 
       const newUser = new User({
