@@ -73,3 +73,55 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const google = async (req, res, next) => {
+  const { name, email, googlePhotoUrl } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETKEY);
+
+      const { password, ...rest } = user._doc;
+
+      res
+        .status(200)
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .json(rest);
+    } else {
+      /* we're creating a random password for the user initially 'cause a user can't be created without a password. This random password can later be changed by our user */
+      /* we're generating a random number between 0 and 1 with ".random()", which we'll then convert to letters and numbers from numbers 0-9 and letters A-Z together by using ".toString(36)". Finally, we extract only the last 8 digits of the generated number ".slice(-8)". For instance, the number until ".toString(36)" could be 0.54726ec06w7 and then with ".slice(-8)", we extract only 54726ec0 & remove the "0." */
+      /* the process is repeated to make it more secure */
+      const generatedRandomPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const hashedPassword = bcryptjs.hashSync(generatedRandomPassword, 10);
+
+      const newUser = new User({
+        username:
+          name.toLowerCase().split(" ").join("") +
+          /* if its toString(9) it will generate only numbers */
+          Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        profilePicture: googlePhotoUrl,
+      });
+
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const { password, ...rest } = newUser._doc;
+      res
+        .status(200)
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .json(rest);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
