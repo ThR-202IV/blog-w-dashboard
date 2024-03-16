@@ -3,11 +3,14 @@ import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 /* in order to make your navigation links active when they correspond with the URL, we use useLocation */
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { FaMoon, FaSun } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice.js";
 
 const Header = () => {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const { theme } = useSelector((state) => state.theme);
   /* in order to make your navigation links active when they correspond with the URL, we use useLocation */
   const path = useLocation().pathname;
 
@@ -18,7 +21,8 @@ const Header = () => {
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
       >
         <span className="px-2 py-2 text-slate-400">
-          Code<span className="text-slate-700 p-1">——</span>Prime
+          Code<span className="text-slate-700 p-1 dark:text-slate-300">——</span>
+          Prime
         </span>
       </Link>
       {/* 'cause we submit a search request, we need a form */}
@@ -36,8 +40,13 @@ const Header = () => {
       {/* with md:order-2 we are able to place the button before the hamburger menu in medium breakpoint and above */}
       {/* see: https://www.devwares.com/tailwindcss/classes/tailwind-order/ */}
       <div className="flex gap-2 md:order-2">
-        <Button className="w-12 h-10 hidden sm:inline" color="grey" pill>
-          <FaMoon />
+        <Button
+          className="w-12 h-10 hidden sm:inline"
+          color="grey"
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === "light" ? <FaMoon /> : <FaSun />}
         </Button>
         {currentUser ? (
           <Dropdown

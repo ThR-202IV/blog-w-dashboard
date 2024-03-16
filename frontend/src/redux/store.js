@@ -1,12 +1,14 @@
 /* as the name suggests, combineReducers allows us to combine reducers if we have more than one reducer. see: https://redux.js.org/api/combinereducers */
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice.js";
+import themeReducer from "./theme/themeSlice.js";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 /* rootReducer holds our various reducers */
 const rootReducer = combineReducers({
   user: userReducer,
+  theme: themeReducer,
 });
 
 const persistConfig = {

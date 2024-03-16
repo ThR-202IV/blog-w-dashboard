@@ -62,7 +62,9 @@ const SignIn = () => {
         <div className="flex-1">
           <Link to="/" className="font-bold dark:text-white text-4xl">
             <span className=" text-slate-400">
-              Code<span className="text-slate-700 p-1">——</span>Prime
+              Code
+              <span className="text-slate-700 p-1 dark:text-slate-300">——</span>
+              Prime
             </span>
           </Link>
           <p className="text-sm mt-5">

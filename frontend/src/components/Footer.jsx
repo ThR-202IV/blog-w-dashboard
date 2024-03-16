@@ -15,7 +15,11 @@ const FooterComp = () => {
               className="self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white"
             >
               <span className="text-slate-400">
-                Code<span className="text-slate-700 p-1">——</span>Prime
+                Code
+                <span className="text-slate-700 p-1 dark:text-slate-300">
+                  ——
+                </span>
+                Prime
               </span>
             </Link>
           </div>
