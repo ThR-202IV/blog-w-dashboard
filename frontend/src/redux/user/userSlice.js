@@ -17,14 +17,14 @@ const userSlice = createSlice({
       state.error = null;
     },
     signInSuccess: (state, action) => {
-      /* action.payload is data, which is passed into signInSuccess in SignIn.jsx inside if(resp.ok) {...} within handleSubmit */
+      /* action.payload is data, which is passed into signInSuccess in SignIn.jsx inside "if (resp.ok) {...}" within handleSubmit */
       state.currentUser = action.payload;
       state.loading = false;
       state.error = null;
     },
     signInFailure: (state, action) => {
       state.loading = false;
-      /* action.payload is data.message that is passed into signInFailure in SignIn.jsx inside if (data.success === false){...} within handleSubmit */
+      /* action.payload is data.message that is passed into signInFailure in SignIn.jsx inside "if (data.success === false){...}" within handleSubmit */
       state.error = action.payload;
     },
   },
