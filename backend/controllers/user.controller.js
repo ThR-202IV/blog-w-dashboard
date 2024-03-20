@@ -8,6 +8,7 @@ export const test = (req, res) => {
 };
 
 export const updateUser = async (req, res, next) => {
+  /* req.user comes from the verifyUser.js */
   if (req.user.id !== req.params.userId) {
     return next(
       errorHandler(403, "You're not authorized to update this user!")
@@ -61,6 +62,22 @@ export const updateUser = async (req, res, next) => {
 
     const { password, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  /* req.user comes from the verifyUser.js */
+  if (req.user.id !== req.params.userId) {
+    return next(
+      errorHandler(403, "You're not allowed to delete this account!")
+    );
+  }
+
+  try {
+    await User.findByIdAndDelete(req.params.userId);
+    res.status(200).json("User has been deleted!");
   } catch (error) {
     next(error);
   }
