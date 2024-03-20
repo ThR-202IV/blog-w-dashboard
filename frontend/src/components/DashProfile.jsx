@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, TextInput } from "flowbite-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
@@ -11,6 +11,11 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import { app } from "../../firebase.js";
+import {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+} from "../redux/user/userSlice.js";
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -20,6 +25,11 @@ const DashProfile = () => {
   const filePickerRef = useRef();
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
+  const [imageFileUploading, setImageFileUploading] = useState(false);
+  const [userUpdateSuccessful, setUserUpdateSuccessful] = useState(null);
+  const [userUpdateError, setUserUpdateError] = useState(null);
+  const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -38,6 +48,7 @@ const DashProfile = () => {
   }, [imageFile]);
 
   const uploadImage = async () => {
+    setImageFileUploading(true);
     /* setting setImageFileUploadError(null) at the beginning here ensures that the error alert for the previous wrong upload gets erased before the new upload process */
     setImageFileUploadError(null);
     /* app comes from firebase.js. 'cause of this "app", firebase will understand that the request to upload the images is from the authorized */
@@ -65,21 +76,71 @@ const DashProfile = () => {
         setImageFileUploadProgress(null);
         setImageFile(null);
         setImageFileUrl(null);
+        setImageFileUploading(false);
       },
       /* getting the file URL */
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setImageFileUrl(downloadUrl);
+          setFormData({ ...formData, profilePicture: downloadUrl });
+          setImageFileUploading(false);
         });
       }
     );
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    /* we're are setting these states to their default to ensure that there are no messages shown to the user regarding the previous state changes whilst uploading again */
+    setUserUpdateError(null);
+    setUserUpdateSuccessful(null);
+    /* we're checking if the formdata is empty and if it is then we don't submit the form */
+    if (Object.keys(formData).length === 0) {
+      setUserUpdateError("No changes made!");
+      return;
+    }
+
+    /* this ensures that updating the profile whilst the image is still being uploaded is not possible  */
+    if (imageFileUploading) {
+      setUserUpdateError("Please wait for the image to upload!");
+      return;
+    }
+
+    try {
+      dispatch(updateStart());
+
+      const resp = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        dispatch(updateFailure(data.message));
+        setUserUpdateError(data.message);
+      } else {
+        dispatch(updateSuccess(data));
+        setUserUpdateSuccessful("Your profile has been updated successfully!");
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+      setUserUpdateError(error.message);
+    }
   };
 
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
       {/* self-center won't work if its parent element i.e., form doesn't have flex */}
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {/* uploading animation */}
         <input
           type="file"
@@ -115,7 +176,7 @@ const DashProfile = () => {
             />
           )}
           <img
-            /* currentUser.profilePicture is the image saved in our DB and imageFileUrl is the temporary URL which we have created for the chosen image that we are about to upload */
+            /* currentUser.profilePicture is the image saved in our DB and imageFileUrl is the temporary URL which we have created for the chosen image (as a preview) that we are about to upload */
             src={imageFileUrl || currentUser.profilePicture}
             alt="user"
             className={`rounded-full w-full h-full border-3 object-cover ${
@@ -133,14 +194,21 @@ const DashProfile = () => {
           id="username"
           placeholder="username"
           defaultValue={currentUser.username}
+          onChange={handleChange}
         />
         <TextInput
           type="text"
           id="email"
           placeholder="email"
           defaultValue={currentUser.email}
+          onChange={handleChange}
         />
-        <TextInput type="password" id="password" placeholder="password" />
+        <TextInput
+          type="password"
+          id="password"
+          placeholder="password"
+          onChange={handleChange}
+        />
         <Button type="submit" outline>
           Update
         </Button>
@@ -149,7 +217,16 @@ const DashProfile = () => {
         <span className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">Sign Out</span>
       </div>
-      <div className="text-slate-500 flex"></div>
+      {userUpdateSuccessful && (
+        <Alert color="success" className="mt-5">
+          {userUpdateSuccessful}
+        </Alert>
+      )}
+      {userUpdateError && (
+        <Alert color="failure" className="mt-5">
+          {userUpdateError}
+        </Alert>
+      )}
     </div>
   );
 };
