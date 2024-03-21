@@ -20,6 +20,7 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  signOutSuccess,
 } from "../redux/user/userSlice.js";
 
 const DashProfile = () => {
@@ -161,6 +162,24 @@ const DashProfile = () => {
     }
   };
 
+  const handleSignout = async () => {
+    /* 'cause we're not sending any files, we don't have to have any headers */
+    try {
+      const resp = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -242,7 +261,9 @@ const DashProfile = () => {
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span onClick={handleSignout} className="cursor-pointer">
+          Sign Out
+        </span>
       </div>
       {userUpdateSuccessful && (
         <Alert color="success" className="mt-5">

@@ -5,7 +5,9 @@ import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
+
 import { toggleTheme } from "../redux/theme/themeSlice.js";
+import { signOutSuccess } from "../redux/user/userSlice.js";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -13,6 +15,24 @@ const Header = () => {
   const { theme } = useSelector((state) => state.theme);
   /* in order to make your navigation links active when they correspond with the URL, we use useLocation */
   const path = useLocation().pathname;
+
+  const handleSignout = async () => {
+    /* 'cause we're not sending any files, we don't have to have any headers */
+    try {
+      const resp = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <Navbar className="border-b-2">
@@ -66,7 +86,7 @@ const Header = () => {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
