@@ -11,6 +11,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 /* Hi here stands for Hero Icons */
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 import { app } from "../../firebase.js";
 import {
@@ -25,7 +26,7 @@ import {
 
 const DashProfile = () => {
   const dispatch = useDispatch();
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   /* imageFileUrl is a temporary URL we create with "URL.createObjectURL()", which if we refresh the page will revert back to our image saved in our DB, this is 'cause this temporary URL is only for UI purpose */
   const [imageFileUrl, setImageFileUrl] = useState(null);
@@ -253,9 +254,26 @@ const DashProfile = () => {
           placeholder="password"
           onChange={handleChange}
         />
-        <Button type="submit" outline>
-          Update
+        <Button
+          type="submit"
+          gradientMonochrome="teal"
+          outline
+          className="font-semibold"
+          disabled={loading || imageFileUploading}
+        >
+          {loading ? "Loading" : "Update"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button
+              type="button"
+              gradientMonochrome="teal"
+              className="w-full font-semibold"
+            >
+              Create post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="text-red-500 flex justify-between my-3">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
