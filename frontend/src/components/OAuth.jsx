@@ -32,7 +32,7 @@ const OAuth = () => {
       const data = await resp.json();
 
       if (resp.ok) {
-        dispatch(signInSuccess);
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {

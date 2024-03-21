@@ -56,7 +56,10 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(404, "Wrong credentials!"));
     }
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRETKEY);
+    const token = jwt.sign(
+      { id: validUser._id, isAdmin: validUser.isAdmin },
+      process.env.JWT_SECRETKEY
+    );
 
     /* 'cause we have extreacted the password from req.body, we can't use the same variable name as we would have name , so we use the variable name pass */
     /* we are seperating the user password from the rest of other data 'cause we don't want to send the password in the response even if it has been hashed */
@@ -81,7 +84,10 @@ export const google = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETKEY);
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT_SECRETKEY
+      );
       const { password, ...rest } = user._doc;
 
       res
@@ -110,7 +116,10 @@ export const google = async (req, res, next) => {
       });
 
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const token = jwt.sign(
+        { id: newUser._id, isAdmin: newUser.isAdmin },
+        process.env.JWT_SECRET
+      );
       const { password, ...rest } = newUser._doc;
       res
         .status(200)

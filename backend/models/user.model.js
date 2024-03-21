@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema(
       default:
         "https://openseauserdata.com/files/7f16cec1cc177a7e148067006e73c02a.png",
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   /* gives the time of creation and update */
   { timestamps: true }
