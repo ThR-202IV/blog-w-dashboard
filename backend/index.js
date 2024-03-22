@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
+import postRoutes from "./routes/post.route.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.listen(3000, () => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/post", postRoutes);
 
 /* this error is the error that comes from the input. The error passed by the next method that manages the errorHandler comes here */
 app.use((error, req, res, next) => {
