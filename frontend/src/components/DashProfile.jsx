@@ -26,11 +26,11 @@ import {
 
 const DashProfile = () => {
   const dispatch = useDispatch();
+  const filePickerRef = useRef();
   const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   /* imageFileUrl is a temporary URL we create with "URL.createObjectURL()", which if we refresh the page will revert back to our image saved in our DB, this is 'cause this temporary URL is only for UI purpose */
   const [imageFileUrl, setImageFileUrl] = useState(null);
-  const filePickerRef = useRef();
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
@@ -214,7 +214,7 @@ const DashProfile = () => {
                   left: 0,
                 },
                 path: {
-                  /* the opacity of the progress bar depends on the percentage with these rules. When the progress is 100%, then 100 / 100 would be 1, so opacity will be set to 1 */
+                  /* An RGBA color value is an extension of RGB with an Alpha channel (opacity). When the imageFileUploadProgress is 100%, then 100 / 100 would be 1, so opacity will be set to 1 */
                   stroke: `rgba(62,152,199, ${imageFileUploadProgress / 100})`,
                 },
               }}
