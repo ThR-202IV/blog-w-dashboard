@@ -54,7 +54,25 @@ const DashUsers = () => {
     }
   };
 
-  const handleDeleteUser = async () => {};
+  const handleDeleteUser = async () => {
+    try {
+      const resp = await fetch(`/api/user/delete/${userIdToBeDeleted}`, {
+        method: "DELETE",
+      });
+
+      const data = await resp.json();
+      if (resp.ok) {
+        setUsers((prev) =>
+          prev.filter((user) => user._id !== userIdToBeDeleted)
+        );
+        setShowModal(false);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     /* scrollbar is the tailwind plugin we installed. see: tailwind.config.js */
