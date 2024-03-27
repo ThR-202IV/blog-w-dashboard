@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Spinner } from "flowbite-react";
 
+import CallToAction from "../components/CallToAction";
+
 const PostPage = () => {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
@@ -58,7 +60,7 @@ const PostPage = () => {
         alt={post && post.title}
         className="mt-10 p-3 max-h-[600px] w-full object-cover"
       />
-      <div className="flex justify-between p-3 border-b border-slate-300 mx-auto w-full max-w-2xl text-xs ">
+      <div className="flex justify-between p-3 border-b border-teal-200 mx-auto w-full max-w-2xl text-xs dark:border-teal-700 ">
         <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
         {/* time needed to complete reading the article. We base it on one minute for each 1000 characters */}
         {/* 'cause dividing the content length by 1000 would yeild a number with decimals, we use "toFixed" to give a whole number */}
@@ -71,6 +73,9 @@ const PostPage = () => {
         className="p-3 max-w-2xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
+      <div className="max-w-4xl mx-auto w-full">
+        <CallToAction />
+      </div>
     </main>
   );
 };
