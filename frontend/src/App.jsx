@@ -13,10 +13,13 @@ import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
     <BrowserRouter>
+      {/* check ScrollToTop.jsx for the reason why we have added this */}
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
