@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Alert, Button, Textarea } from "flowbite-react";
 import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
-
-  console.log(comments);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,6 +62,37 @@ const CommentSection = ({ postId }) => {
     getComments();
   }, [postId]);
 
+  const handleLike = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+      const resp = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+
+      if (resp.ok) {
+        const data = await resp.json();
+        /* we're updating the comments state based on the data we receive */
+        setComments(
+          comments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.numberOfLikes,
+                }
+              : /* meaning, keep the comment as it is if the condition has failed */
+                comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -101,7 +131,7 @@ const CommentSection = ({ postId }) => {
             value={comment}
           />
           <div className="flex justify-between items-center mt-5">
-            <p className="text-gray-300 dark:text-gray-600">
+            <p className="text-gray-400 dark:text-gray-500">
               {200 - comment.length} characters remaining
             </p>
             <Button outline type="submit">
@@ -126,7 +156,7 @@ const CommentSection = ({ postId }) => {
             </div>
           </div>
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} />
           ))}
         </>
       )}

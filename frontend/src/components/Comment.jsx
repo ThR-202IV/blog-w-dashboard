@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 /* for displaying the time of our comments in the comment section */
 import moment from "moment";
+import { IoMdThumbsUp } from "react-icons/io";
+import { useSelector } from "react-redux";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, onLike }) => {
+  const { currentUser } = useSelector((state) => state.user);
   const [user, setUser] = useState({});
-
-  console.log(user);
 
   useEffect(() => {
     const getUser = async () => {
@@ -44,6 +45,27 @@ const Comment = ({ comment }) => {
         <p className="text-gray-500 dark:text-gray-200 pb-2">
           {comment.content}
         </p>
+        {/* max-w-fit is the reason why the border above the thumbs-up icon and the number of likes fits the size of it  */}
+        <div className="flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2">
+          <button
+            type="button"
+            onClick={() => onLike(comment._id)}
+            /* dynamically changes tailwind styles based on a condition */
+            className={`text-gray-300 dark:text-gray-600 hover:text-green-500 dark:hover:text-green-300 ${
+              currentUser &&
+              comment.likes.includes(currentUser._id) &&
+              "!text-green-500 dark:!text-green-300"
+            }`}
+          >
+            <IoMdThumbsUp className="text-sm" />
+          </button>
+          <p className="text-gray-400">
+            {comment.numberOfLikes > 0 &&
+              comment.numberOfLikes +
+                " " +
+                (comment.numberOfLikes === 1 ? "like" : "likes")}
+          </p>
+        </div>
       </div>
     </div>
   );
