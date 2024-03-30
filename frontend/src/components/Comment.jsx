@@ -5,7 +5,7 @@ import { IoMdThumbsUp } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { Button, Textarea } from "flowbite-react";
 
-const Comment = ({ comment, onLike, onEdit }) => {
+const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -125,13 +125,22 @@ const Comment = ({ comment, onLike, onEdit }) => {
               </p>
               {currentUser &&
                 (currentUser._id === comment.userId || currentUser.isAdmin) && (
-                  <button
-                    type="button"
-                    onClick={handleEdit}
-                    className="text-gray-400 dark:text-gray-200 hover:text-green-500 dark:hover:text-green-300"
-                  >
-                    Edit
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleEdit}
+                      className="text-gray-400 dark:text-gray-200 hover:text-green-500 dark:hover:text-green-300"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onDelete(comment._id)}
+                      className="text-gray-400 dark:text-gray-200 hover:text-red-500 dark:hover:text-red-300"
+                    >
+                      Delete
+                    </button>
+                  </>
                 )}
             </div>
           </>
