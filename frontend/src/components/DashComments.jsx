@@ -87,7 +87,7 @@ const DashComments = () => {
           <Table hoverable className="shadow-md">
             <Table.Head>
               <Table.HeadCell>Date updated</Table.HeadCell>
-              <Table.HeadCell>Comment content</Table.HeadCell>
+              <Table.HeadCell>Comment</Table.HeadCell>
               <Table.HeadCell>Number of likes</Table.HeadCell>
               <Table.HeadCell>Post ID</Table.HeadCell>
               <Table.HeadCell>User ID</Table.HeadCell>
