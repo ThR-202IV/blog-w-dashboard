@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 /* in order to make your navigation links active when they correspond with the URL, we use useLocation */
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,10 +11,23 @@ import { signOutSuccess } from "../redux/user/userSlice.js";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
-  const { theme } = useSelector((state) => state.theme);
+  const navigate = useNavigate();
   /* in order to make your navigation links active when they correspond with the URL, we use useLocation */
   const path = useLocation().pathname;
+  const location = useLocation();
+  const { currentUser } = useSelector((state) => state.user);
+  const { theme } = useSelector((state) => state.theme);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  /* search is available in location by default, it is all the data inside the location */
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
 
   const handleSignout = async () => {
     /* 'cause we're not sending any files, we don't have to have any headers */
@@ -34,6 +47,17 @@ const Header = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    /* this is to ensure that we change the URL search term when we type it in the search bar —— that is, it matches the search bar */
+    const urlParams = new URLSearchParams(location.search);
+    /* here we set the URL searchTerm with the search term state we have created, which changes with user input */
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
   return (
     <Navbar className="border-b-2">
       <Link
@@ -46,12 +70,14 @@ const Header = () => {
         </span>
       </Link>
       {/* 'cause we submit a search request, we need a form */}
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextInput
           type="text"
           placeholder="Search"
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
       <Button className="w-12 h-10 lg:hidden" color="grey" pill>
