@@ -18,12 +18,17 @@ const Home = () => {
   return (
     <div>
       <div className="flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold lg:text-6xl">Welcome to my blog!</h1>
-        <p className=" text-gray-400 text-xs sm:text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia
-          pariatur, porro labore itaque iure dolor, beatae amet eum
-          exercitationem explicabo deserunt voluptas delectus maxime. Cumque
-          optio porro voluptas maxime fugiat!
+        <h1 className="text-3xl font-bold lg:text-6xl">
+          Hey there, inquisitive reader!
+        </h1>
+        <p className="text-gray-400 text-md">
+          Code——Prime is home for programming stories and ideas. Here, you can
+          find insightful perspectives, useful knowledge, and everything about
+          and related to the coding world — without being forced to subscribe to
+          unnecessary mailing lists that will only clog up your inbox.
+        </p>
+        <p className="text-gray-400 text-md">
+          Code——Prime believes that what you read matters!
         </p>
         <Link
           to="/search"
