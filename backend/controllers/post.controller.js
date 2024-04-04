@@ -51,7 +51,7 @@ export const getPosts = async (req, res, next) => {
       /* searchTerm will search in both title and content of the post */
       ...(req.query.searchTerm && {
         /* using $or allows us to search in two places, like: title and content */
-        /* options: "i" means case insensitive  */
+        /* options: "i" means case insensitive */
         $or: [
           { title: { $regex: req.query.searchTerm, $options: "i" } },
           { content: { $regex: req.query.searchTerm, $options: "i" } },
