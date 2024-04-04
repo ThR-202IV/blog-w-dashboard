@@ -28,10 +28,10 @@ const FooterComp = () => {
               <Footer.Title title="About" />
               <Footer.LinkGroup col>
                 {/* target="_blank" opens a new window & rel="noopener noreferrer" allows the external site to be opened without the browser asking questions annd blocking the new window */}
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link href="#" rel="noopener noreferrer">
                   About us
                 </Footer.Link>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link href="#" rel="noopener noreferrer">
                   FAQs
                 </Footer.Link>
               </Footer.LinkGroup>
@@ -47,7 +47,7 @@ const FooterComp = () => {
                 >
                   Github
                 </Footer.Link>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link href="#" rel="noopener noreferrer">
                   Blog
                 </Footer.Link>
               </Footer.LinkGroup>
@@ -56,10 +56,10 @@ const FooterComp = () => {
               <Footer.Title title="Legal" />
               <Footer.LinkGroup col>
                 {/* target="_blank" opens a new window & rel="noopener noreferrer" allows the external site to be opened without the browser asking questions annd blocking the new window */}
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link href="#" rel="noopener noreferrer">
                   Privacy Policy
                 </Footer.Link>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link href="#" rel="noopener noreferrer">
                   Terms &amp; Conditions
                 </Footer.Link>
               </Footer.LinkGroup>

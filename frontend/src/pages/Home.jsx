@@ -22,13 +22,13 @@ const Home = () => {
           Hey there, inquisitive reader!
         </h1>
         <p className="text-gray-400 text-md">
-          Code——Prime is home for programming stories and ideas. Here, you can
+          Code —— Prime is home for programming stories and ideas. Here, you can
           find insightful perspectives, useful knowledge, and everything about
           and related to the coding world — without being forced to subscribe to
           unnecessary mailing lists that will only clog up your inbox.
         </p>
         <p className="text-gray-400 text-md">
-          Code——Prime believes that what you read matters!
+          Code —— Prime believes that what you read matters!
         </p>
         <Link
           to="/search"
@@ -43,8 +43,10 @@ const Home = () => {
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7">
         {posts && posts.length > 0 && (
           <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-semibold text-center">Recent Posts</h2>
-            <div className="flex flex-wrap gap-4">
+            <h2 className="text-2xl font-semibold text-center">
+              Recent Articles
+            </h2>
+            <div className="flex flex-wrap gap-4 justify-center items-center">
               {posts.map((post) => (
                 <PostCard key={post._id} post={post} />
               ))}
@@ -53,7 +55,7 @@ const Home = () => {
               to={"/search"}
               className="text-lg text-teal-500 hover:underline text-center"
             >
-              View all posts
+              View all articles
             </Link>
           </div>
         )}

@@ -62,10 +62,9 @@ const SignUp = () => {
             </span>
           </Link>
           <p className="text-sm mt-5">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Saepe
-            quasi nostrum voluptas temporibus neque nobis ceat iure, maxime
-            ommodi ut quidem doloribus, labore aboriosam blanditiis est eum illo
-            esse non.
+            Code —— Prime is home for programming stories and ideas. Here, you
+            can find insightful perspectives, useful knowledge, and everything
+            about and related to the coding world.
           </p>
         </div>
 

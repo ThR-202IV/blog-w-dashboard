@@ -134,7 +134,7 @@ const DashboardComp = () => {
       <div className="flex flex-wrap gap-4 py-3 mx-auto justify-center">
         <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between p-3 text-sm font-semibold">
-            <h1 className="text-center p-2">Recent Users</h1>
+            <h1 className="text-center text-lg p-2">Recent Users</h1>
             <Button gradientMonochrome="teal">
               <Link to="/dashboard?tab=users">See all</Link>
             </Button>
@@ -164,7 +164,7 @@ const DashboardComp = () => {
 
         <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between p-3 text-sm font-semibold">
-            <h1 className="text-center p-2">Recent Comments</h1>
+            <h1 className="text-center text-lg p-2">Recent Comments</h1>
             <Button gradientMonochrome="teal">
               <Link to="/dashboard?tab=comments">See all</Link>
             </Button>
@@ -190,7 +190,7 @@ const DashboardComp = () => {
 
         <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
           <div className="flex justify-between p-3 text-sm font-semibold">
-            <h1 className="text-center p-2">Recent Posts</h1>
+            <h1 className="text-center text-lg p-2">Recent Posts</h1>
             <Button gradientMonochrome="teal">
               <Link to="/dashboard?tab=posts">See all</Link>
             </Button>
