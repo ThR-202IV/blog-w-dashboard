@@ -9,17 +9,9 @@
     "start": "node backend/index.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ThR-202IV/mern-w-dashboard.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ThR-202IV/mern-w-dashboard/issues"
-  },
-  "homepage": "https://github.com/ThR-202IV/mern-w-dashboard#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
