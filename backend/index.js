@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 /* render frontend to any path that the user goes to */
 app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "/frontend/dist/index.html"))
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
 );
 
 /* this error is the error that comes from the input. The error passed by the next method that manages the errorHandler comes here */
