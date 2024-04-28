@@ -61,7 +61,7 @@ export const signin = async (req, res, next) => {
       process.env.JWT_SECRETKEY
     );
 
-    /* 'cause we have extreacted the password from req.body, we can't use the same variable name as we would have name , so we use the variable name pass */
+    /* 'cause we have extracted the password from req.body, we can't use the same variable name as we would have name, so we use the variable name pass */
     /* we are seperating the user password from the rest of other data 'cause we don't want to send the password in the response even if it has been hashed */
     const { password: pass, ...rest } = validUser._doc;
 
