@@ -3,3 +3,10 @@
 1.	User Authentication
 -	User Story
 -	As a Customer, I want to create an account and log in securely using my email, so that my cart and order history are saved across sessions.
+
+
+3.	User Stories and Acceptance Criteria
+Interface 1: Client-Side 
+1.	User Authentication
+-	User Story
+•	As a Customer, I want to create an account and log in securely using my email, so that my cart and order history are saved across sessions.
